@@ -51,6 +51,16 @@ and all you need to add is the arguments
 
 ```docker run --rm -it -v $PWD:/module gentrajectory --input /module/examples/waypoints1.csv --v_max 1.0 --a_max 1.0 -o /module/traj1.csv```
 
+## Apptainer
+
+Apptainer is an alternative to Docker and can be used in a similar way. The steps are equivalent to the ones when working with Docker:
+```bash
+git submodule update --init --recursive
+apptainer build genTrajectory.sif genTrajectory.def
+apptainer run --bind $PWD:/module genTrajectory.sif --input /module/examples/waypoints1.csv --v_max 1.0 --a_max 1.0 -o /module/traj1.csv
+``` 
+
+
 ## Polynomial Trajectories
 
 ### Generate Trajectory Given Waypoints
