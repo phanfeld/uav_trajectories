@@ -1,0 +1,32 @@
+BootStrap: docker
+From: ubuntu:22.04
+
+%post
+    apt-get update && apt-get install -y \
+        git \
+        build-essential \
+        libnlopt-dev \
+        libnlopt-cxx-dev \
+        libgoogle-glog-dev \
+        cmake \
+        libeigen3-dev \
+        libboost-all-dev
+
+    # Copy project files into the container (they'll be bound at runtime)
+    mkdir -p /uav_trajectories
+    cp -r /uav_trajectories_src/* /uav_trajectories/
+
+    # Build the project
+    mkdir -p /uav_trajectories/build
+    cd /uav_trajectories/build
+    cmake ..
+    make
+
+%files
+    ./ /uav_trajectories_src/
+
+%environment
+    export PATH=/uav_trajectories/build:$PATH
+
+%runscript
+    exec /uav_trajectories/build/genTrajectory "$@"
